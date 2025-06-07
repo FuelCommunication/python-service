@@ -1,7 +1,7 @@
 from litestar.plugins.sqlalchemy import SQLAlchemyPlugin
 from litestar_granian import GranianPlugin
 
-from app.config import db_config
+from app.core.config import db_config
 
-sql_alchemy = SQLAlchemyPlugin(config=db_config)
+sqlalchemy = SQLAlchemyPlugin(config=db_config)
 granian = GranianPlugin()
