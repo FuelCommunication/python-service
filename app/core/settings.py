@@ -11,6 +11,8 @@ class Settings(BaseSettings):
 
     ORIGINS: list[str]
 
+    SECRET_KEY: str
+
     @property
     def DATABASE_URL(self) -> str:
         """Url for connecting to models"""
