@@ -9,7 +9,7 @@ dependencies = [
     "asyncpg>=0.30.0",
     "bcrypt>=4.3.0",
     "litestar-granian>=0.13.0",
-    "litestar[pydantic,sqlalchemy]>=2.16",
+    "litestar[jwt,pydantic,sqlalchemy]>=2.16",
     "pydantic-settings>=2.9.1",
 ]
 
