@@ -5,7 +5,7 @@ from litestar.plugins.pydantic.dto import PydanticDTO
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
-class Account(BaseModel):
+class User(BaseModel):
     id: uuid.UUID
     email: EmailStr
     username: str
@@ -17,20 +17,11 @@ class Account(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class AccountReadDto(PydanticDTO[Account]):
+class UserReadDto(PydanticDTO[User]):
     config = DTOConfig(exclude={"password"})
 
 
-class AccountUpdatePartial(BaseModel):
-    email: EmailStr | None = None
-    username: str | None
-    password: str | None = Field(min_length=8, default=None)
-    avatar_url: str | None = None
-    bio: str | None = None
-    is_verified: bool | None = None
-
-
-class CreateAccount(BaseModel):
+class CreateUser(BaseModel):
     email: EmailStr
     username: str
     password: str = Field(min_length=8, default=None)
@@ -38,6 +29,15 @@ class CreateAccount(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class GetAccount(BaseModel):
+class GetUser(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, default=None)
+
+
+class UserUpdatePartial(BaseModel):
+    email: EmailStr | None = None
+    username: str | None
+    password: str | None = Field(min_length=8, default=None)
+    avatar_url: str | None = None
+    bio: str | None = None
+    is_verified: bool | None = None

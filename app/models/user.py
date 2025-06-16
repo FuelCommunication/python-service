@@ -3,8 +3,8 @@ from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
 
-class AccountModel(UUIDv7AuditBase):
-    __tablename__ = "Accounts"
+class UserModel(UUIDv7AuditBase):
+    __tablename__ = "Users"
 
     email: Mapped[str] = mapped_column(unique=True, index=True, nullable=False)
     username: Mapped[str]

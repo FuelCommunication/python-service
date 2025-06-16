@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .repositories import AccountRepository
+from .repositories import UserRepository
 
 
-async def provide_accounts_repo(db_session: AsyncSession) -> AccountRepository:
-    return AccountRepository(session=db_session)
+async def provide_user_repo(db_session: AsyncSession) -> UserRepository:
+    return UserRepository(session=db_session)

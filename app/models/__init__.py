@@ -1,3 +1,3 @@
-from .account import AccountModel
+from .user import UserModel
 
-__all__ = (AccountModel,)
+__all__ = (UserModel,)
