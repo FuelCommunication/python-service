@@ -28,5 +28,5 @@ auth = OAuth2PasswordBearerAuth[UserModel](
     retrieve_user_handler=current_user_from_token,
     token_secret=settings.SECRET_KEY,
     token_url="/login",
-    exclude=["/login", "/schema"],
+    exclude=["/login", "/schema", "/ping"],
 )
