@@ -12,4 +12,3 @@ class UserModel(UUIDv7AuditBase):
 
     avatar_url: Mapped[str | None] = mapped_column(String(length=500), nullable=True, default=None)
     bio: Mapped[str | None]
-    is_verified: Mapped[bool] = mapped_column(default=False)

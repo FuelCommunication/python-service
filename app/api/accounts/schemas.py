@@ -2,6 +2,7 @@ import uuid
 
 from litestar.dto import DTOConfig
 from litestar.plugins.pydantic.dto import PydanticDTO
+from litestar.security.jwt import OAuth2Login
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
@@ -12,7 +13,6 @@ class User(BaseModel):
     password: str
     avatar_url: str | None = None
     bio: str | None = None
-    is_verified: bool = False
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -40,4 +40,8 @@ class UserUpdatePartial(BaseModel):
     password: str | None = Field(min_length=8, default=None)
     avatar_url: str | None = None
     bio: str | None = None
-    is_verified: bool | None = None
+
+
+class LoginResponse(BaseModel):
+    session: OAuth2Login
+    user: User
