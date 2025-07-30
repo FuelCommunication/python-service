@@ -1,12 +1,11 @@
 from litestar import Controller, Request, Response, post
 from litestar.di import Provide
 from litestar.exceptions import NotFoundException
-from litestar.security.jwt import OAuth2Login
 
 from ..deps import provide_user_repo
 from ..guards import auth
 from ..repositories import UserRepository
-from ..schemas import GetUser
+from ..schemas import GetUser, LoginResponse, User
 
 
 class AccessController(Controller):
@@ -16,14 +15,15 @@ class AccessController(Controller):
     dependencies = {"users_repo": Provide(provide_user_repo)}
 
     @post(path="/login")
-    async def login(self, data: GetUser, users_repo: UserRepository) -> Response[OAuth2Login]:
+    async def login(self, data: GetUser, users_repo: UserRepository) -> LoginResponse:
         """Login account"""
 
         user = await users_repo.check_email_and_password(data=data)
         if not user:
             raise NotFoundException(detail="User not found")
 
-        return auth.login(user.email)
+        session = auth.login(user.email)
+        return LoginResponse(session=session.content, user=User.model_validate(user))
 
     @post(path="/logout")
     async def logout(self, request: Request) -> Response:

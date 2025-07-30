@@ -18,7 +18,7 @@ class UserController(Controller):
     dependencies = {"users_repo": Provide(provide_user_repo)}
     return_dto = UserReadDto
 
-    @post(status_code=HTTP_201_CREATED, guards=None)
+    @post(status_code=HTTP_201_CREATED, path="/create")
     async def create(self, data: CreateUser, users_repo: UserRepository) -> User:
         """Create a new user"""
 
