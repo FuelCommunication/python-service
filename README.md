@@ -1,13 +1,16 @@
 # Python service
-Stack: litestar, pydantic, sqlalchemy(asyncpg), uv, ruff
+
+Stack: litestar, pydantic, sqlalchemy[asyncpg], faststream[kafka], uv and ruff
 
 ## Running the service
 ### Locale
-```shell
+
+```bash
 uv sync
 litestar --app app.main:app run
 ```
-```shell
+
+```bash
 docker build -t python-service .
 docker run --rm python-service
 ```
@@ -21,5 +24,4 @@ http://localhost:8000/schema/rapidoc (for RapiDoc)
 ```
 
 ## License
-
 This project is licensed under the **MIT License**.
