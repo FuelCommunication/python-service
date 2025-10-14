@@ -8,10 +8,10 @@ from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
-    from .user import UsersModel
+    from .user import User
 
 
-class UserOauthModel(UUIDv7AuditBase):
+class UserOauth(UUIDv7AuditBase):
     __tablename__ = "UserOauthModel"
 
     user_id: Mapped[UUID] = mapped_column(ForeignKey("Users.id", ondelete="cascade"))
@@ -22,7 +22,7 @@ class UserOauthModel(UUIDv7AuditBase):
     account_id: Mapped[str] = mapped_column(String(length=320), index=True)
     account_email: Mapped[str] = mapped_column(String(length=320))
 
-    user: Mapped[UsersModel] = relationship(
+    user: Mapped[User] = relationship(
         back_populates="oauth_accounts",
         innerjoin=True,
         lazy="joined",

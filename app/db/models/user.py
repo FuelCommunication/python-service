@@ -7,11 +7,11 @@ from sqlalchemy import LargeBinary, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
-    from .channels import ChannelsModel
-    from .oauth_user import UserOauthModel
+    from .channel_subscribers import ChannelSubscribers
+    from .oauth_user import UserOauth
 
 
-class UsersModel(UUIDv7AuditBase):
+class User(UUIDv7AuditBase):
     __tablename__ = "Users"
 
     email: Mapped[str] = mapped_column(unique=True, index=True)
@@ -20,13 +20,12 @@ class UsersModel(UUIDv7AuditBase):
     avatar_url: Mapped[str | None] = mapped_column(String(length=500))
     bio: Mapped[str | None]
 
-    channels: Mapped[list[ChannelsModel]] = relationship(
+    channels: Mapped[list[ChannelSubscribers]] = relationship(
         back_populates="user",
         lazy="selectin",
-        cascade="all, delete-orphan",
+        cascade="all, delete",
+        viewonly=True,
     )
-    oauth_accounts: Mapped[list[UserOauthModel]] = relationship(
-        back_populates="user",
-        lazy="selectin",
-        cascade="all, delete-orphan",
+    oauth_accounts: Mapped[list[UserOauth]] = relationship(
+        back_populates="user", lazy="selectin", cascade="all, delete-orphan", uselist=True
     )
