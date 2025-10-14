@@ -2,9 +2,25 @@ from uuid import UUID
 
 from advanced_alchemy.extensions.litestar.dto import SQLAlchemyDTO
 from litestar.dto import DTOConfig
+from litestar.security.jwt import OAuth2Login
 from pydantic import BaseModel, EmailStr
 
-from ...db.models import UsersModel
+import app.db.models as m
+
+
+class UserReadDto(SQLAlchemyDTO[m.User]):
+    config = DTOConfig(exclude={"password", "created_at", "updated_at", "channels", "oauth_accounts"})
+
+
+class RegisterAccount(BaseModel):
+    email: EmailStr
+    username: str
+    password: str
+
+
+class LoginAccount(BaseModel):
+    email: EmailStr
+    password: str
 
 
 class OauthAccount(BaseModel):
@@ -17,10 +33,6 @@ class OauthAccount(BaseModel):
     refresh_token: str | None = None
 
 
-class UserReadDto(SQLAlchemyDTO[UsersModel]):
-    config = DTOConfig(exclude={"password"})
-
-
 class UserUpdatePartial(BaseModel):
     email: EmailStr | None = None
     username: str | None = None
@@ -29,12 +41,16 @@ class UserUpdatePartial(BaseModel):
     bio: str | None = None
 
 
-class RegisterAccount(BaseModel):
+class User(BaseModel):
+    id: UUID
     email: EmailStr
     username: str
-    password: str
+    avatar_url: str | None = None
+    bio: str | None = None
+
+    model_config = {"from_attributes": True}
 
 
-class LoginAccount(BaseModel):
-    email: EmailStr
-    password: str
+class AuthBody(BaseModel):
+    user: User
+    session: OAuth2Login

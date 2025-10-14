@@ -6,7 +6,7 @@ from litestar.di import Provide
 from litestar.exceptions import NotFoundException
 from litestar.status_codes import HTTP_201_CREATED
 
-from app.db.models import UsersModel
+import app.db.models as m
 
 from ..deps import provide_user_repo
 from ..repositories import UserRepository
@@ -22,7 +22,7 @@ class UserController(Controller):
     return_dto = UserReadDto
 
     @get(path="/{user_id:uuid}")
-    async def get(self, user_id: UUID, users_repo: UserRepository) -> UsersModel:
+    async def get(self, user_id: UUID, users_repo: UserRepository) -> m.User:
         """Get an existing user"""
         try:
             user = await users_repo.get(user_id)
@@ -31,7 +31,7 @@ class UserController(Controller):
             raise NotFoundException(detail=f"User with ID {user_id} not found")
 
     @patch(path="/{user_id:uuid}", status_code=HTTP_201_CREATED)
-    async def partial_update(self, user_id: UUID, data: UserUpdatePartial, users_repo: UserRepository) -> UsersModel:
+    async def partial_update(self, user_id: UUID, data: UserUpdatePartial, users_repo: UserRepository) -> m.User:
         """Update a user"""
         try:
             user = await users_repo.update_partial(user_id=user_id, data=data)
