@@ -1,17 +1,24 @@
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
+
 from litestar import Litestar
 
-from app.api import api_routers
-from app.api.accounts.guards import auth
-from app.core.config import cors_config, db_config, rate_limit_config
+from app.api import api_routers, auth
+from app.broker.router import broker
+from app.core.config import cors_config, rate_limit_config, sqlalchemy_config
 from app.core.plugins import granian, sqlalchemy
 
 
-async def on_startup() -> None:
+@asynccontextmanager
+async def lifespan(_app: Litestar) -> AsyncGenerator[None]:
     from litestar.plugins.sqlalchemy import base
 
     """Initializes the models."""
-    async with db_config.get_engine().begin() as conn:
+    async with sqlalchemy_config.get_engine().begin() as conn:
         await conn.run_sync(base.UUIDBase.metadata.create_all)
+    await broker.start()
+    yield
+    await broker.stop()
 
 
 app = Litestar(
@@ -20,5 +27,5 @@ app = Litestar(
     plugins=[sqlalchemy, granian],
     cors_config=cors_config,
     on_app_init=[auth.on_app_init],
-    on_startup=[on_startup],
+    lifespan=[lifespan],
 )
