@@ -2,21 +2,28 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-    POSTGRES_HOST: str
-    POSTGRES_DB: str
-    POSTGRES_PORT: int
-    ORIGINS: list[str]
-    SECRET_KEY: str
-    BROKER_URL: str
+    postgres_user: str
+    postgres_password: str
+    postgres_host: str
+    postgres_db: str
+    postgres_port: int
+    origins: list[str]
+    secret_key: str
+    broker_host: str
+    broker_external_port: int
+    broker_internal_port: int
 
     @property
-    def DATABASE_URL(self) -> str:
+    def database_url(self) -> str:
         """Url for connecting to database"""
-        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        return f"postgresql+asyncpg://{self.postgres_user}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    @property
+    def broker_url(self) -> str:
+        """Url for connecting to broker"""
+        return f"{self.broker_host}:{self.broker_internal_port}"
+
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
 
 settings = Settings()

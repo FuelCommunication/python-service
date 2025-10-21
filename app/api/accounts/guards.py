@@ -28,7 +28,7 @@ async def current_user_from_token(token: Token, connection: ASGIConnection[any, 
 
 auth = OAuth2PasswordBearerAuth[m.User](
     retrieve_user_handler=current_user_from_token,
-    token_secret=settings.SECRET_KEY,
+    token_secret=settings.secret_key,
     token_url="/login",
     exclude=["/login", "/schema", "/ping", "/access/register"],
 )

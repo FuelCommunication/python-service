@@ -6,11 +6,11 @@ from .settings import settings
 
 session_config = AsyncSessionConfig(expire_on_commit=False)
 sqlalchemy_config = SQLAlchemyAsyncConfig(
-    connection_string=settings.DATABASE_URL,
+    connection_string=settings.database_url,
     session_config=session_config,
 )
 cors_config = CORSConfig(
-    allow_origins=settings.ORIGINS,
+    allow_origins=settings.origins,
     allow_credentials=True,
 )
 rate_limit_config = RateLimitConfig(rate_limit=("minute", 50), exclude=["/schema"])

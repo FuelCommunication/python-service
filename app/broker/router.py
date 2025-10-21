@@ -7,7 +7,7 @@ from app.core.settings import settings
 from .deps import UserRepository, get_users_repo
 from .schemas import UpdateImage
 
-broker = KafkaBroker(settings.BROKER_URL)
+broker = KafkaBroker(settings.broker_url)
 
 
 @broker.subscriber("images")
