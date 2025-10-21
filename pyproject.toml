@@ -8,7 +8,7 @@ requires-python = ">=3.13"
 dependencies = [
     "asyncpg>=0.30.0",
     "bcrypt>=5.0.0",
-    "faststream[kafka]>=0.6.0",
+    "faststream[kafka]>=0.6.2",
     "litestar-granian>=0.14.2",
     "litestar[jwt,pydantic,sqlalchemy]>=2.18.0",
     "pydantic-settings>=2.11.0",
@@ -19,8 +19,8 @@ dev = [
     "pre-commit>=4.3.0",
     "pytest>=8.4.2",
     "pytest-asyncio>=1.2.0",
-    "ruff>=0.14.0",
-    "uvicorn>=0.37.0",
+    "ruff>=0.14.1",
+    "uvicorn>=0.38.0",
 ]
 
 [tool.ruff]
@@ -28,8 +28,16 @@ line-length = 130
 exclude = ["migrations"]
 
 [tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_functions = ["test_*"]
 asyncio_mode="auto"
 asyncio_default_fixture_loop_scope="function"
+addopts = [
+    "-vv",
+    "--import-mode=importlib"
+]
 
 [tool.ruff.lint]
 select = [
