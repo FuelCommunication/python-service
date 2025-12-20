@@ -10,8 +10,7 @@ class Settings(BaseSettings):
     origins: list[str]
     secret_key: str
     broker_host: str
-    broker_external_port: int
-    broker_internal_port: int
+    broker_port: int
 
     @property
     def database_url(self) -> str:
@@ -21,7 +20,7 @@ class Settings(BaseSettings):
     @property
     def broker_url(self) -> str:
         """Url for connecting to broker"""
-        return f"{self.broker_host}:{self.broker_internal_port}"
+        return f"{self.broker_host}:{self.broker_port}"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
