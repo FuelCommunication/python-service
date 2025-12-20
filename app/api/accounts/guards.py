@@ -7,7 +7,6 @@ from litestar.security.jwt import OAuth2PasswordBearerAuth, Token
 import app.db.models as m
 from app.core.config import sqlalchemy_config
 from app.core.settings import settings
-
 from .deps import provide_user_repo
 from .schemas import AuthBody
 
@@ -29,8 +28,8 @@ async def current_user_from_token(token: Token, connection: ASGIConnection[any, 
 auth = OAuth2PasswordBearerAuth[m.User](
     retrieve_user_handler=current_user_from_token,
     token_secret=settings.secret_key,
-    token_url="/login",
-    exclude=["/login", "/schema", "/ping", "/access/register"],
+    token_url="/access/login",
+    exclude=["/schema", "/ping", "/metrics", "/access/login", "/access/register"],
 )
 
 
